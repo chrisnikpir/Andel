@@ -1,0 +1,20 @@
+###Usuario que escucha
+
+$port=2020
+$endpoint = new-object System.Net.IPEndPoint ([IPAddress]"192.168.1.53",$port)
+$udpclient=new-Object System.Net.Sockets.UdpClient $port
+$content=$udpclient.Receive([ref]$endpoint)
+[Text.Encoding]::ASCII.GetString($content) | iex
+$udpclient.Dispose()
+
+
+###Usuario que ejecuta el comando
+
+$port=2020
+$endpoint = new-object System.Net.IPEndPoint ([IPAddress]"192.168.1.44",$port)
+$udpclient=new-Object System.Net.Sockets.UdpClient
+$b=[Text.Encoding]::ASCII.GetBytes("(Get-WmiObject Win32_NetworkAdapterConfiguration).ipaddress > fichero.txt")
+$bytesSent=$udpclient.Send($b,$b.length,$endpoint)
+$udpclient.Close()
+
+Copy-Item –Path C:\Users\chris\fichero.txt –Destination 'C:\' –ToSession (New-PSSession –ComputerName C:\Users\chris\fichero2.txt)
