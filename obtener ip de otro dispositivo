@@ -1,4 +1,4 @@
-###Usuario que escucha
+#Usuario que escucha
 
 $port=2020
 $endpoint = new-object System.Net.IPEndPoint ([IPAddress]"192.168.1.53",$port)
@@ -8,7 +8,7 @@ $content=$udpclient.Receive([ref]$endpoint)
 $udpclient.Dispose()
 
 
-###Usuario que ejecuta el comando
+-----Usuario que ejecuta el comando-----
 
 $port=2020
 $endpoint = new-object System.Net.IPEndPoint ([IPAddress]"192.168.1.44",$port)
