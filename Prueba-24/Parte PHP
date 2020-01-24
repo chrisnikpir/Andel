@@ -1,0 +1,68 @@
+	<?php
+	
+	// http://localhost/P001/default.php?enviar=almacenar&nombre=juan3dd
+	
+		$enviar = "";
+		$resultado = "";
+			
+		
+		$var = "./ini/datos.ini";
+		$base = parse_ini_file($var);		
+		$php = new PDO($base["baseDeDatos"],$base["usuario"],$base["password"]);
+		
+		if($enviar == "almacenar")
+		{
+			$con = $php->prepare("INSERT INTO encabezados VALUES (DEFAULT,:tex);");
+			$con->bindParam(':tex',$nombre);
+			$con->execute();
+			?><?php echo "" ?><?php
+		}    
+        elseif($enviar == "firewall")
+		{
+            $base = parse_ini_file("./ini/datos.ini");
+            $php = new PDO($base["baseDeDatos"],$base["usuario"],$base["password"]);
+            $con = $php->prepare("SELECT * from encabezados;");
+            $con->execute();
+            $registros = $con->fetchAll(PDO::FETCH_NUM);
+            $php = null;
+		
+            $texto = $registros[0][1];			
+            ?><?php echo "$resultado" ?><?php			
+		}
+        elseif($enviar == "connection")
+		{
+            $base = parse_ini_file("./ini/datos.ini");
+            $php = new PDO($base["baseDeDatos"],$base["usuario"],$base["password"]);
+            $con = $php->prepare("SELECT * from encabezados;");
+            $con->execute();
+            $registros = $con->fetchAll(PDO::FETCH_NUM);
+            $php = null;
+		
+            $n = count($registros);
+            $texto = $registros[1][1];			
+            ?><?php echo "$resultado" ?><?php			
+		}
+        elseif($enviar == "print")
+		{
+            $base = parse_ini_file("./ini/datos.ini");
+            $php = new PDO($base["baseDeDatos"],$base["usuario"],$base["password"]);
+            $con = $php->prepare("SELECT * from encabezados;");
+            $con->execute();
+            $registros = $con->fetchAll(PDO::FETCH_NUM);
+            $php = null;
+		
+            $n = count($registros);
+            $texto = $registros[2][1];			
+            ?><?php echo "$resultado" ?><?php
+        }
+		else
+		{
+			$con = $php->prepare("SELECT * from encabezados;");
+			$con->execute();
+			$registros = $con->fetchAll(PDO::FETCH_NUM);	
+			$n = count($registros);
+			$numero = mt_rand(0,($n-1));
+			$resultado = $registros[$numero][1];			
+			?><?php echo "$resultado" ?><?php
+		}
+	?>
