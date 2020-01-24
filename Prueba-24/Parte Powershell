@@ -1,0 +1,79 @@
+$webfirewall = iwr http://localhost/P001/prueba24.php?enviar=firewall
+$webconnection = iwr http://localhost/P001/prueba24.php?enviar=connection
+$webprint = iwr http://localhost/P001/prueba24.php?enviar=print
+
+
+if($webfirewall.Content -eq "firewall" )
+{
+
+###Cliente
+
+$port=2021
+$TcpClient=New-Object System.Net.Sockets.TcpClient([IPAddress]'10.202.0.66', $port)
+ 
+$GetStream = $TcpClient.GetStream()
+$StreamWriter = New-Object System.IO.StreamWriter $GetStream
+ 
+$positions=date
+ 
+$StreamWriter.Write($positions)
+ 
+$StreamWriter.Dispose()
+$GetStream.Dispose()
+$TcpClient.Dispose()
+
+###Server###
+
+$port=2021
+$IPEndPoint=New-Object System.Net.IPEndPoint([IPAddress]::Any ,$port)
+$TcpListener=New-Object System.Net.Sockets.TcpListener $IPEndPoint
+$TcpListener.Start()
+ 
+$AcceptTcpClient=$TcpListener.AcceptTcpClient()
+$GetStream=$AcceptTcpClient.GetStream()
+$StreamReader=New-Object System.IO.StreamReader $GetStream
+$StreamReader.ReadLine()
+ 
+$StreamReader.Dispose()
+$GetStream.Dispose()
+$AcceptTcpClient.Dispose()
+$TcpListener.Stop()
+
+
+###Regla del Firewall###
+$nombre= Read-Host "NOMBRE DE LA REGLA"
+$accion= Read-Host "ACCIÓN - Block o Allow"
+$direccion= Read-Host "DIRECCIÓN - Inbound u Outbound"
+$protocolo= Read-Host "PROTOCOLO - ICMPv4, TCP, UDP..."
+
+## Crear la regla de firewall:
+New-NetFirewallRule -DisplayName $nombre -Action $accion -Direction $direccion -Enabled True -Protocol $protocolo
+
+#Habilitar#
+Enable-NetFirewallRule -DisplayName $nombre
+#Deshabilitar#
+Disable-NetFirewallRule -DisplayName $nombre
+}
+
+if($webconnection.Content -eq "connection" )
+{
+New-SSHSession -ComputerName 192.168.1.162 -Credential (Get-Credential)
+
+}
+
+if($webprint.Content -eq "print" )
+{
+    foreach ($trabajo in Get-PrintJob "Brother Color Leg Type1 Class Driver")
+    {
+        if($trabajo.Size -gt 1KB)
+        {
+            if($trabajo.UserName -EQ "administrador")
+            {
+                "ES MAYOR, LO ELIMINO"
+                $trabajo.Id
+                Remove-PrintJob -ID $trabajo.Id -PrinterName "Brother Color Leg Type1 Class Driver" -WhatIf
+            }
+        }
+    }
+}
+
