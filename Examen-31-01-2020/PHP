@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+</head>
+
+<body>
+
+	<?php
+	
+	$enviar = "";
+	$resultado = "";
+	
+	$enviar1= "enviar";
+        $hashed1 = hash("sha512", $enviar1); //8453d14195369bf714ca346c1662411205bd7de257928d9a49934dca6f3841211f7ce53cf8e24e56c88c29d5a0640c0a0c232d2389186304b94a07aa515cdac3
+	    
+		$firewall= "firewall";
+        $hashed = hash("sha512", $firewall); //3a3cd1428cda56d28d8eea7591418b4caa0bcf4fe2e9def87a255bc5646ce78899cb9332edfda0fe921aa5b684e7ffe3dbfdb78a27de31f2bf4105ea9d4ffbab
+	
+		$connection= "connection";
+        $hashed = hash("sha512", $connection); //3a3cd1428cda56d28d8eea7591418b4caa0bcf4fe2e9def87a255bc5646ce78899cb9332edfda0fe921aa5b684e7ffe3dbfdb78a27de31f2bf4105ea9d4ffbab
+	
+        $print= "print";
+        $hashed = hash("sha512", $print); //06460743cfd9c7f3c8ca1c85298f53645b50feb10d09bcd0ead7c494ec7d11c477c83ad8ab9d1c0345c0e3ff3637954f2cc139f34c8b4b9ccb49a92ca3ad77a5
+        
+		if($enviar == "3a3cd1428cda56d28d8eea7591418b4caa0bcf4fe2e9def87a255bc5646ce78899cb9332edfda0fe921aa5b684e7ffe3dbfdb78a27de31f2bf4105ea9d4ffbab")
+		{
+			$base = parse_ini_file("./ini/datos.ini");
+            $php = new PDO($base["baseDeDatos"],$base["usuario"],$base["password"]);
+            $con = $php->prepare("SELECT * from encabezados;");
+			$con->bindParam(':tex',$nombre);
+            $con->execute();
+            $registros = $con->fetchAll(PDO::FETCH_NUM);
+            $texto = $registros[0][5];			
+            ?><?php echo $texto ?><?php
+		} 
+        if($enviar == "3a3cd1428cda56d28d8eea7591418b4caa0bcf4fe2e9def87a255bc5646ce78899cb9332edfda0fe921aa5b684e7ffe3dbfdb78a27de31f2bf4105ea9d4ffbab")
+		{
+            $base = parse_ini_file("./ini/datos.ini");
+            $php = new PDO($base["baseDeDatos"],$base["usuario"],$base["password"]);
+            $con = $php->prepare("SELECT * from encabezados;");
+			$con->bindParam(':tex',$nombre);
+            $con->execute();
+            $registros = $con->fetchAll(PDO::FETCH_NUM);
+            $n = count($registros);
+            $texto = $registros[0][6];			
+            ?><?php echo $texto ?><?php			
+		}
+        if($enviar == "06460743cfd9c7f3c8ca1c85298f53645b50feb10d09bcd0ead7c494ec7d11c477c83ad8ab9d1c0345c0e3ff3637954f2cc139f34c8b4b9ccb49a92ca3ad77a5")
+		{
+            $base = parse_ini_file("./ini/datos.ini");
+            $php = new PDO($base["baseDeDatos"],$base["usuario"],$base["password"]);
+            $con = $php->prepare("SELECT * from encabezados;");
+			$con->bindParam(':tex',$nombre);
+            $con->execute();
+            $registros = $con->fetchAll(PDO::FETCH_NUM);
+            $n = count($registros);
+            $texto = $registros[0][7];			
+            ?><?php echo $texto ?><?php
+        }
+	?>
+    </body>
+
+    
+</html>
