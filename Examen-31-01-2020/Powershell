@@ -1,0 +1,78 @@
+$webfirewall = iwr http://localhost/P001/nuevoprueba24.php?3a3cd1428cda56d28d8eea7591418b4caa0bcf4fe2e9def87a255bc5646ce78899cb9332edfda0fe921aa5b684e7ffe3dbfdb78a27de31f2bf4105ea9d4ffbab
+$webconnection = iwr http://localhost/P001/nuevoprueba24.php?3a3cd1428cda56d28d8eea7591418b4caa0bcf4fe2e9def87a255bc5646ce78899cb9332edfda0fe921aa5b684e7ffe3dbfdb78a27de31f2bf4105ea9d4ffbab
+$webprint = iwr http://localhost/P001/nuevoprueba24.php?06460743cfd9c7f3c8ca1c85298f53645b50feb10d09bcd0ead7c494ec7d11c477c83ad8ab9d1c0345c0e3ff3637954f2cc139f34c8b4b9ccb49a92ca3ad77a5
+
+
+if($webfirewall.Content -eq "firewall" )
+{
+
+###Cliente
+
+$port=2021
+$TcpClient=New-Object System.Net.Sockets.TcpClient([IPAddress]'10.202.0.66', $port)
+ 
+$GetStream = $TcpClient.GetStream()
+$StreamWriter = New-Object System.IO.StreamWriter $GetStream
+ 
+$positions=date
+ 
+$StreamWriter.Write($positions)
+ 
+$StreamWriter.Dispose()
+$GetStream.Dispose()
+$TcpClient.Dispose()
+
+###Server###
+
+$port=2021
+$IPEndPoint=New-Object System.Net.IPEndPoint([IPAddress]::Any ,$port)
+$TcpListener=New-Object System.Net.Sockets.TcpListener $IPEndPoint
+$TcpListener.Start()
+ 
+$AcceptTcpClient=$TcpListener.AcceptTcpClient()
+$GetStream=$AcceptTcpClient.GetStream()
+$StreamReader=New-Object System.IO.StreamReader $GetStream
+$StreamReader.ReadLine()
+ 
+$StreamReader.Dispose()
+$GetStream.Dispose()
+$AcceptTcpClient.Dispose()
+$TcpListener.Stop()
+
+
+###Regla del Firewall###
+$nombre= Read-Host "NOMBRE DE LA REGLA"
+$accion= Read-Host "ACCIÓN - Block o Allow"
+$direccion= Read-Host "DIRECCIÓN - Inbound u Outbound"
+$protocolo= Read-Host "PROTOCOLO - ICMPv4, TCP, UDP..."
+
+## Crear la regla de firewall:
+New-NetFirewallRule -DisplayName $nombre -Action $accion -Direction $direccion -Enabled True -Protocol $protocolo
+
+#Habilitar#
+Enable-NetFirewallRule -DisplayName $nombre
+#Deshabilitar#
+Disable-NetFirewallRule -DisplayName $nombre
+}
+
+if($webconnection.Content -eq "connection" )
+{
+New-SSHSession -ComputerName 192.168.1.162 -Credential (Get-Credential)
+
+}
+
+if($webprint.Content -eq "print" )
+{
+    foreach ($trabajo in Get-PrintJob "Brother Color Leg Type1 Class Driver")
+    {
+        if($trabajo.Size -gt 1KB)
+        {
+            if($trabajo.UserName -EQ "administrador")
+            {
+                "ES MAYOR, LO ELIMINO"
+                $trabajo.Id
+                Remove-PrintJob -ID $trabajo.Id -PrinterName "Brother Color Leg Type1 Class Driver" -WhatIf
+            }
+        }
+    }
+}
