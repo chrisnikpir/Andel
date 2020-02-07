@@ -1,0 +1,135 @@
+###Crear unidades organizativas###
+foreach($UO in Get-Content .\Desktop\ExamenASO\classyuser.txt)
+{
+    if($UO.split(",")[0] -eq 1)
+    {
+        New-ADOrganizationalUnit -Name $UO.split(",")[1] -ProtectedFromAccidentalDeletion $false -Path "DC=andeldos,DC=local"
+    }
+    if($UO.split(",")[0] -eq 2)
+    {
+        New-ADOrganizationalUnit -Name $UO.split(",")[1] -ProtectedFromAccidentalDeletion $false -Path "DC=andeldos,DC=local"
+    }
+    if($UO.split(",")[0] -eq 3)
+    {
+        New-ADOrganizationalUnit -Name $UO.split(",")[1] -ProtectedFromAccidentalDeletion $false -Path "DC=andeldos,DC=local"
+    }
+    if($UO.split(",")[0] -eq 4)
+    {
+        New-ADOrganizationalUnit -Name $UO.split(",")[1] -ProtectedFromAccidentalDeletion $false -Path "DC=andeldos,DC=local"
+    }
+    if($UO.split(",")[0] -eq 5)
+    {
+        New-ADOrganizationalUnit -Name $UO.split(",")[1] -ProtectedFromAccidentalDeletion $false -Path "DC=andeldos,DC=local"
+    }
+    if($UO.split(",")[0] -eq 6)
+    {
+        New-ADOrganizationalUnit -Name $UO.split(",")[1] -ProtectedFromAccidentalDeletion $false -Path "DC=andeldos,DC=local"
+    }
+    if($UO.split(",")[0] -eq 19)
+    {
+        New-ADOrganizationalUnit -Name $UO.split(",")[1] -ProtectedFromAccidentalDeletion $false -Path "DC=andeldos,DC=local"
+    }
+  }
+
+###Crear grupos###
+
+   foreach($grp in Get-Content  .\Desktop\ExamenASO\classyuser.txt) {
+    if($grp.split(",")[0] -EQ 7)    {
+    New-ADGroup -Name $grp.split(",")[1] -Sam $grp.split(",")[1] -Path "OU=UO1,DC=andeldos,DC=local"  -GroupScope DomainLocal
+    Add-ADGroupMember -Identity GRP1 -Member Christian
+    }
+    if($grp.split(",")[0] -EQ 8)    {
+    New-ADGroup -Name $grp.split(",")[1] -Sam $grp.split(",")[1] -Path "OU=UO2,DC=andeldos,DC=local"  -GroupCategory Security -GroupScope DomainLocal
+    Add-ADGroupMember -Identity GRP2 -Members David
+    }
+    if($grp.split(",")[0] -EQ 9)    {
+    New-ADGroup -Name $grp.split(",")[1] -Sam $grp.split(",")[1] -Path "OU=UO3,DC=andeldos,DC=local"  -GroupCategory Security -GroupScope DomainLocal
+    Add-ADGroupMember -Identity GRP3 -Members Gonzalo
+    }
+    if($grp.split(",")[0] -EQ 10)   {
+    New-ADGroup -Name $grp.split(",")[1] -Sam $grp.split(",")[1] -Path "OU=UO4,DC=andeldos,DC=local"  -GroupCategory Security -GroupScope DomainLocal
+    Add-ADGroupMember -Identity GRP4 -Members Miguel
+    }
+    if($grp.split(",")[0] -EQ 11)   {
+    New-ADGroup -Name $grp.split(",")[1] -Sam $grp.split(",")[1] -Path "OU=UO5,DC=andeldos,DC=local"  -GroupCategory Security -GroupScope DomainLocal
+    Add-ADGroupMember -Identity GRP5 -Members Mario
+    }
+    if($grp.split(",")[0] -EQ 12)   {
+    New-ADGroup -Name $grp.split(",")[1] -Sam $grp.split(",")[1] -Path "OU=UO6,DC=andeldos,DC=local"  -GroupCategory Security -GroupScope DomainLocal
+    Add-ADGroupMember -Identity GRP6 -Members Antonio,Victor
+    }
+    }
+
+###Crear usuarios###
+
+    foreach($usr in Get-Content .\Desktop\ExamenASO\classyuser.txt)
+    {
+    if($usr.split(",")[0] -eq 13)
+    {
+        New-ADUser -Name $usr.split(",")[1] -Sam $usr.split(",")[1] -Path "CN=Users,DC=andeldos,DC=local" -AccountPassword (ConvertTo-SecureString "Contrasena1234" -AsPlainText -force) -Enable $true
+    }
+    if($usr.split(",")[0] -eq 14)
+    {
+        New-ADUser -Name $usr.split(",")[1] -Sam $usr.split(",")[1] -Path "CN=Users,DC=andeldos,DC=local" -AccountPassword (ConvertTo-SecureString "Contrasena1234" -AsPlainText -force) -Enable $true
+    }
+    if($usr.split(",")[0] -eq 15)
+    {
+        New-ADUser -Name $usr.split(",")[1] -Sam $usr.split(",")[1] -Path "CN=Users,DC=andeldos,DC=local" -AccountPassword (ConvertTo-SecureString "Contrasena1234" -AsPlainText -force) -Enable $true
+    }
+    if($usr.split(",")[0] -eq 16)
+    {
+        New-ADUser -Name $usr.split(",")[1] -Sam $usr.split(",")[1] -Path "CN=Users,DC=andeldos,DC=local" -AccountPassword (ConvertTo-SecureString "Contrasena1234" -AsPlainText -force) -Enable $true
+    }
+    if($usr.split(",")[0] -eq 17)
+    {
+        New-ADUser -Name $usr.split(",")[1] -Sam $usr.split(",")[1] -Path "CN=Users,DC=andeldos,DC=local" -AccountPassword (ConvertTo-SecureString "Contrasena1234" -AsPlainText -force) -Enable $true
+    }
+    if($usr.split(",")[0] -eq 18)
+    {
+        New-ADUser -Name $usr.split(",")[1] -Sam $usr.split(",")[1] -Path "CN=Users,DC=andeldos,DC=local" -AccountPassword (ConvertTo-SecureString "Contrasena1234" -AsPlainText -force) -Enable $true
+    }
+    if($usr.split(",")[0] -eq 20)
+    {
+        New-ADUser -Name $usr.split(",")[1] -Sam $usr.split(",")[1] -Path "CN=Users,DC=andeldos,DC=local" -AccountPassword (ConvertTo-SecureString "Contrasena1234" -AsPlainText -force) -Enable $true
+    }
+   }
+
+   
+###Deshabilitar usuarios###
+
+   Disable-ADAccount -Identity Christian
+   Disable-ADAccount -Identity David
+   Disable-ADAccount -Identity Gonzalo
+
+   
+
+###Borrar Unidades Organizativas###
+
+    foreach($borrar in Get-Content .\Desktop\ExamenASO\classyuser.txt)
+   {
+    if($borrar.split(",")[0] -eq 1)
+    {
+    Get-ADGroup -filter {SamAccountName -like "GRP1*"} | Remove-ADGroup -confirm:$true
+    Get-ADOrganizationalUnit -Filter {Name -eq "UO1"} | Remove-ADOrganizationalUnit -confirm:$true
+    }
+    if($borrar.split(",")[0] -eq 2)
+    {
+    Get-ADGroup -filter {SamAccountName -like "GRP2*"} | Remove-ADGroup -confirm:$true
+    Get-ADOrganizationalUnit -Filter {Name -eq "UO2"} | Remove-ADOrganizationalUnit -confirm:$true
+    }
+    if($borrar.split(",")[0] -eq 3)
+    {
+    Get-ADGroup -filter {SamAccountName -like "GRP3*"} | Remove-ADGroup -confirm:$true
+    Get-ADOrganizationalUnit -Filter {Name -eq "UO3"} | Remove-ADOrganizationalUnit -confirm:$true
+    }
+    if($borrar.split(",")[0] -eq 4)
+    {
+    Get-ADGroup -filter {SamAccountName -like "GRP4*"} | Remove-ADGroup -confirm:$true
+    Get-ADOrganizationalUnit -Filter {Name -eq "UO4"} | Remove-ADOrganizationalUnit -confirm:$true
+    }
+    if($borrar.split(",")[0] -eq 5)
+    {
+    Get-ADGroup -filter {SamAccountName -like "GRP5*"} | Remove-ADGroup -confirm:$true
+    Get-ADOrganizationalUnit -Filter {Name -eq "UO5"} | Remove-ADOrganizationalUnit -confirm:$true
+    }
+   }
