@@ -1,0 +1,78 @@
+$usr= Read-Host "Indique nombre de usuario"
+$pass= Read-Host "Añada una contraseña a $usr minimo de 8 carácteres"
+$grp= Read-Host "Clase al que pertenece $usr"
+$uo= Read-Host "¿Donde esta cursando $grp el usuario $usr?"
+
+
+echo "uo,$uo" > C:\Users\Administrador\Desktop\ExamenASO\usuarios.txt
+echo "grp,$grp,$uo" >> C:\Users\Administrador\Desktop\ExamenASO\usuarios.txt
+echo "usr,$grp,$usr,$pass" >> C:\Users\Administrador\Desktop\ExamenASO\usuarios.txt
+
+$uo, $grp, $usr, $pass 
+
+foreach($fich in Get-Content C:\Users\Administrador\Desktop\ExamenASO\usuarios.txt) {
+    switch($fich.split(",")[0]){
+
+
+"uo"{
+      $uo1=$fich.split(",")[1]
+      New-ADOrganizationalUnit -Name "$uo1" -ProtectedFromAccidentalDeletion $false -Path "DC=andeldos,DC=local"
+      Write-Host "Ha sido creado la UO $uo"
+        }
+
+"grp"{
+      $grp1=$fich.split(",")[1]
+      $uo2=$fich.split(",")[2]
+      New-ADGroup -Name "$grp1" -Path "OU=$uo2,DC=andeldos,DC=local" -GroupScope DomainLocal -GroupCategory Security
+      Write-Host "El grupo $gr1 ha sido creado correctamente "
+      }
+
+"usr"{
+      $grp2=$fich.split(",")[1]
+      $usr1=$fich.split(",")[2]
+      $passwd=$fich.split(",")[3]
+      New-ADUser -Name "$usr1" -Sam "$usr1" -Path "CN=Users,DC=andeldos,DC=local" -AccountPassword (ConvertTo-SecureString $pass -AsPlainText -force) -Enable $true
+      Add-ADGroupMember -Identity "$grp2"  -Members "$usr1"
+      Write-Host "Se ha creado el usuario $usr1 con exito"
+      }
+    }
+}
+
+    New-ADOrganizationalUnit -Name "Usuarios_Deshabilitados" -ProtectedFromAccidentalDeletion $false -Path "DC=andeldos,DC=local"
+
+    mkdir C:\Users\Administrador\Desktop\Carpetas
+    New-SMBShare –Name Carpetas –Path C:\Users\Administrador\Desktop\Carpetas
+
+
+
+$Usuarios= Read-Host "¿Desea deshabilitar un usuario?"
+if( $Usuarios -eq 'si')
+{
+            $Usrdes = Read-Host "¿Quien?"
+            Disable-ADAccount -Identity $Usrdes
+
+        
+    }
+
+else{
+    echo "No se ha borrado nada"
+    }
+
+$Borrar=Read-Host "¿Desea borrar la Unidad Organizativa? (Si o No)"
+
+if( $Borrar -eq 'si')
+{
+    
+    Get-ADGroup -filter {SamAccountName -like "$grp"} | Remove-ADGroup -confirm:$true
+    Get-ADOrganizationalUnit -Filter {Name -eq "$uo"} | Remove-ADOrganizationalUnit -confirm:$true
+    echo "Ha sido borrado la Unidad Organizativa"
+    }
+
+else{
+    echo "No se ha borrado nada"
+    }
+
+
+ls C:\Users\Administrador\Desktop\Carpetas | % {Get-FileHash $_.FullName -Algorithm SHA1 | Out-File C:\Users\Administrador\Desktop\hash.txt -Append}
+ls C:\Users\Administrador\Desktop\Carpetas | % {Get-FileHash $_.FullName -Algorithm SHA1 | Out-File C:\Users\Administrador\Desktop\hash1.txt -Append}
+Compare-Object -ReferenceObject $(Get-Content C:\Users\Administrador\Desktop\hash.txt) -DifferenceObject $(Get-Content C:\Users\Administrador\Desktop\hash1.txt)
