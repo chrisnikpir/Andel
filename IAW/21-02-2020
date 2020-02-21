@@ -19,7 +19,6 @@
 			$con->bindParam(':tex',base64_encode($str));
 			$con->execute();
 			?><h1><center><?php echo "" ?></center></h1><?php
-				
 		}
         if($enviar == "ver")
 		{ 
@@ -31,8 +30,6 @@
             $numero = mt_rand(0,$n);
 			$imagen = $registros[$numero][1];
 			echo $imagen;
-          		
-			
         }
 ?>
 
@@ -44,14 +41,11 @@
 </head>
 <body>
 	<div id="pagina">
-		<img src= $imagen alt="" align="middle">
-		
-		<form action="./default.php" method="get">
-			
+		<img src= $imagen alt="" align="middle">		
+		<form action="./default.php" method="get">			
 			<p>			
-				<img alt="La imagen no se puede mostrar" src="<?php echo base64_decode($imagen); ?>" width="200" height="200" />
-            </p>
-						
+			<img alt="La imagen no se puede mostrar" src="<?php echo base64_decode($imagen); ?>" width="200" height="200" />
+            		</p>				
 		</form>
 	</div>
 </body>
