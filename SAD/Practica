@@ -1,0 +1,35 @@
+##Server   
+$port=2020
+$endpoint = new-object System.Net.IPEndPoint ([IPAddress]::Any,$port)
+$udpclient=new-Object System.Net.Sockets.UdpClient $port
+$content=$udpclient.Receive([ref]$endpoint)
+[Text.Encoding]::ASCII.GetString($content)
+$udpclient.Close()
+
+##################################################
+##Client
+$port=2020
+$endpoint = new-object System.Net.IPEndPoint ([IPAddress]'10.202.0.129',$port)
+$udpclient=new-Object System.Net.Sockets.UdpClient
+$b=[Text.Encoding]::ASCII.GetBytes("Hi")
+$bytesSent=$udpclient.Send($b,$b.length,$endpoint)
+$udpclient.Close()
+
+##################################################
+
+$balloon = New-Object System.Windows.Forms.NotifyIcon 
+
+#Configurar notificación
+#Icono
+$balloon.Icon  = [System.Drawing.Icon]::ExtractAssociatedIcon((Get-Process -Name notepad).Path) 
+$balloon.BalloonTipIcon  = [string]$Icon = 'Info'
+#Mensaje
+$balloon.BalloonTipText  = "$content"
+#Título
+$balloon.BalloonTipTitle  = "Título"
+ 
+$balloon.Visible  = $true
+$balloon.ShowBalloonTip(5000)
+
+
+cd "C:/Program Files (x86)/Wireshark"
