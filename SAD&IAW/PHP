@@ -22,8 +22,8 @@ if($_SERVER["REQUEST_METHOD"] == $_POST)
 ?>
 <?php
 
-	// http://localhost/P001/nose.php?enviar=guardar
-	// http://localhost/P001/nose.php?enviar=ver
+	// http://localhost/P001/SADIAW.php?enviar=guardar
+	// http://localhost/P001/SADIAW.php?enviar=ver
 	
 		$enviar = "";
 		$resultado = "";
@@ -58,7 +58,7 @@ if($_SERVER["REQUEST_METHOD"] == $_POST)
 <html>
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-<title>nose</title>
+<title>SADIAW</title>
 </head>
 <body>
 	<div id="pagina">		
