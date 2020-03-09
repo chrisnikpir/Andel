@@ -1,0 +1,8 @@
+<?php
+
+session_start();
+
+$_SESSION["usuario"] = "Malo";
+?>
+<p>Pulsa Aceptar para Iniciar Sesion.</p>
+<a href="UsuarioMalo.php?enviar=guardar">ACEPTAR</a>
