@@ -1,0 +1,64 @@
+<?php
+// Continuamos la sesión
+session_start();
+// Devolver los valores de sesión
+echo "Nombre de usuario: " . $_SESSION["usuario"];
+?>
+
+<?php
+
+		$imageData ='virus.jpg';
+		$enviar = "";
+		$resultado = "";
+        $enviar = htmlspecialchars($_GET['enviar']); 
+		
+		$var = "./ini/datos.ini";
+		$base = parse_ini_file($var);		
+		$php = new PDO($base["baseDeDatos"],$base["usuario"],$base["password"]);
+		
+		if($enviar == "guardar")
+		{
+			$con = $php->prepare("INSERT INTO encabezados VALUES (DEFAULT,:tex);");
+			$con->bindParam(':tex',$imageData);
+			$con->execute();
+			?><h1><center><?php echo "" ?></center></h1><?php
+		}
+        if($enviar == "ver")
+		{ 
+			$con = $php->prepare("SELECT * from encabezados");
+			$con->bindParam(':tex3',$nombre);
+			$con->execute();
+            $registros = $con->fetchAll(PDO::FETCH_NUM);
+			$imagen = $registros[1][1];
+		}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<title>nose</title>
+</head>
+<body>
+	<div id="pagina">		
+		<form action="./default.php" method="get">			
+			<p>			
+<center><img alt="La imagen no se puede mostrar" src="rec/<?php echo "$imagen"; ?>" width="500" height="500" /></center>
+            </p>
+			<center><p><a href="UsuarioMalo.php?enviar=ver">Ver imagen </a></p></center>
+		</form>
+		
+		
+		<?php
+		echo gethostname();
+		echo "<hr>";
+        echo $_SESSION["usuario"];
+		echo "<hr>";
+        $time = time();
+        echo date("d-m-Y (H:i:s)", $time);
+		echo "<hr>";
+
+		?>
+	</div>
+</body>
+</html>
