@@ -1,0 +1,3 @@
+
+Import-Module C:\Users\chris\OneDrive\Escritorio\ExSAD\Invoke-PSImage.ps1
+Invoke-PSImage -Script  C:\Users\chris\OneDrive\Escritorio\ExSAD\virus.ps1 -Out  C:\xampp\htdocs\P001\rec\virus.jpg  -Image   C:\xampp\htdocs\P001\rec\carlino.jpg
